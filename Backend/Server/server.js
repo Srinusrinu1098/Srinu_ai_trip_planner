@@ -2,20 +2,18 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 
-
+require('dotenv').config({ path: __dirname + '/../.env' })
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 // MySQL Connection with SSL (Required for PlanetScale)
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "Srinu1098@",
-  database: "trip_planner",
-  
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
-
 // Connect to MySQL
 db.connect(err => {
   if (err) {
@@ -59,7 +57,7 @@ app.post("/api/trips", (req, res) => {
 });
 
 // Start Server
-const PORT =  5000;
+const PORT =  process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
