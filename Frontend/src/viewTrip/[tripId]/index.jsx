@@ -13,7 +13,6 @@ function ViewTrip() {
 
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
     const fetchTrip = async () => {
         try {
