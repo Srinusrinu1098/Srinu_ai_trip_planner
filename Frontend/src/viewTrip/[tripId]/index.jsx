@@ -16,7 +16,8 @@ function ViewTrip() {
   useEffect(() => {
     const fetchTrip = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/trips/${tripId}`);
+            const BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
+            const response = await axios.get(`${BASE_URL}/api/trips/${tripId}`);
             console.log(response)
             setLoading(false)
             setTrip(response.data
