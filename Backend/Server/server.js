@@ -57,7 +57,7 @@ db.query("SHOW TABLES;", (err, results) => {
 
 
 
-// POST: Add a Trip
+// POST: Add a Trip to database
 app.post("/api/trips", (req, res) => {
     const { userSelection, tripData, email, id,created_at } = req.body;
     
