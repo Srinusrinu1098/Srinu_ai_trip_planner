@@ -101,7 +101,7 @@ function CreateTrip() {
     setLoading(true);
     const user = JSON.parse(localStorage.getItem("user"));
     const uniqueId = Date.now();
-    console.log(uniqueId)
+    
     
 
     try {
