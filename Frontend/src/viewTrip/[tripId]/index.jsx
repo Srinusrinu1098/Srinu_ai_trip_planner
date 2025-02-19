@@ -18,7 +18,7 @@ function ViewTrip() {
         try {
             const BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
             const response = await axios.get(`${BASE_URL}/api/trips/${tripId}`);
-            console.log(response)
+            
             setLoading(false)
             setTrip(response.data
             );
@@ -33,7 +33,7 @@ function ViewTrip() {
   if (loading) return <p>Loading trip details...</p>;
   if (!trip) return <p>Trip not found.</p>;
 
-  console.log(trip);
+  
 
   return (
     <div className="flex flex-col justify-center items-center w-full">

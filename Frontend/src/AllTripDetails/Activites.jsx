@@ -2,12 +2,14 @@ import { Link } from "react-router-dom";
 
 function Activites(props) {
   const { activites } = props;
-  console.log(activites.itinerary); // Debugging
+  
+ Object.values(activites.itinerary)[0].map((each,index)=>console.log(each.theme))
 
   return (
     <div>
       <div>
-        {Object.values(activites.itinerary).map((each, index) => (
+        {Object.values(activites.itinerary)[0].map((each, index) => (
+
           <div key={index} className="px-9 my-2">
             <h1 className="text-[24px] font-bold ">
               Day {index + 1}: {each.theme}

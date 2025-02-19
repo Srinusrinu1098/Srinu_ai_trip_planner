@@ -106,7 +106,7 @@ function CreateTrip() {
 
     try {
         // 🛠 Debugging: Log the values before sending the request
-        console.log("📝 TripData before saving:", TripData);
+      
         
         // Ensure TripData is a valid JSON object
         const formattedTripData = typeof TripData === "string" ? JSON.parse(TripData) : TripData;
@@ -126,7 +126,7 @@ function CreateTrip() {
 
         const result = await response.json();
         if (response.ok) {
-            console.log("✅ Trip data saved successfully:", result);
+            
             navigate("/view-trip/" + uniqueId);
         } else {
             console.error("❌ Error saving trip data:", result.message);
