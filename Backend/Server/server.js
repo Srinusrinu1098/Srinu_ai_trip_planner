@@ -33,7 +33,7 @@ app.get('/api/trips/:tripId', (req, res) => {
   const tripId = req.params.tripId;
   console.log("Fetching trip with ID:", tripId);
 
-  const query = "SELECT * FROM ai_tripss WHERE id = ?";
+  const query = "SELECT * FROM NewTrips WHERE id = ?";
   db.query(query, [tripId], (err, result) => {
     if (err) {
       console.error("❌ Error fetching trip:", err);
@@ -48,11 +48,12 @@ app.get('/api/trips/:tripId', (req, res) => {
 
 // POST: Add a Trip
 app.post("/api/trips", (req, res) => {
-    const { userSelection, tripData, email, id } = req.body;
+    const { userSelection, tripData, email, id,created_at } = req.body;
+    
 
-    const query = "INSERT INTO ai_tripss (id, userSelection, tripData, email) VALUES (?, ?, ?, ?)";
+    const query = "INSERT INTO NewTrips (id, userSelection, tripData, email,created_at) VALUES (?, ?, ?, ?, ?)";
 
-    db.query(query, [id, JSON.stringify(userSelection), JSON.stringify(tripData), email], (err, result) => {
+    db.query(query, [id, JSON.stringify(userSelection), JSON.stringify(tripData), email,created_at], (err, result) => {
         if (err) {
             console.error("❌ Error saving trip:", err);
             return res.status(500).json({ message: "Internal Server Error" });
