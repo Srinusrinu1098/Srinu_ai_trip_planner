@@ -2,7 +2,7 @@ import { actualPromt, Budgets, noOfUSers } from "@/components/custom/options";
 import { Button } from "@/components/ui/button";
 import { chatSession } from "@/service/aiModel";
 import React, { useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
+
 
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -100,7 +100,7 @@ function CreateTrip() {
   const saveAiTrip = async (TripData) => {
     setLoading(true);
     const user = JSON.parse(localStorage.getItem("user"));
-    const uniqueId = uuidv4();
+    const uniqueId = Date.now();
     console.log(uniqueId)
     
 
@@ -119,7 +119,7 @@ function CreateTrip() {
                 tripData: formattedTripData, // ✅ Use formatted JSON
                 email: user?.email,
                 id: uniqueId,
-                created_at: new Date(Date.now()),
+                created_at: new Date(Date.now()).toISOString().split("T")[0]
                 
             }),
         });

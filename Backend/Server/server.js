@@ -54,13 +54,7 @@ db.query("SHOW TABLES;", (err, results) => {
     console.log("✅ Tables in database:", results);
 });
 
-db.query("DESCRIBE NewTrips;", (err, results) => {
-    if (err) {
-        console.error("❌ Error describing NewTrips table:", err.message);
-        return;
-    }
-    console.log("✅ Table schema for NewTrips:", results);
-});
+
 
 
 // POST: Add a Trip
