@@ -119,7 +119,7 @@ function CreateTrip() {
                 tripData: formattedTripData, // ✅ Use formatted JSON
                 email: user?.email,
                 id: uniqueId,
-                created_at: Date.now(),
+                created_at: new Date(Date.now()),
                 
             }),
         });

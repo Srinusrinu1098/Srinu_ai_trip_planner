@@ -14,7 +14,7 @@ const db = mysql.createConnection({
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
-  port: process.env.MYSQL_PORT || 19259, 
+  port: process.env.MYSQL_PORT || 20453, 
   connectTimeout: 10000, 
 });
 
@@ -45,6 +45,23 @@ app.get('/api/trips/:tripId', (req, res) => {
     res.json(result[0]);
   });
 });
+
+db.query("SHOW TABLES;", (err, results) => {
+    if (err) {
+        console.error("❌ Error fetching tables:", err.message);
+        return;
+    }
+    console.log("✅ Tables in database:", results);
+});
+
+db.query("DESCRIBE NewTrips;", (err, results) => {
+    if (err) {
+        console.error("❌ Error describing NewTrips table:", err.message);
+        return;
+    }
+    console.log("✅ Table schema for NewTrips:", results);
+});
+
 
 // POST: Add a Trip
 app.post("/api/trips", (req, res) => {
