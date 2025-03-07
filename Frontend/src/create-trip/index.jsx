@@ -3,10 +3,8 @@ import { Button } from "@/components/ui/button";
 import { chatSession } from "@/service/aiModel";
 import React, { useState } from "react";
 
-
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-
 
 import { toast } from "sonner";
 
@@ -22,12 +20,9 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
-
-
 function CreateTrip() {
   const [suggestions, setSuggestions] = useState([]);
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [datas, dataAdded] = useState({
     number: "",
     location: "",
@@ -35,7 +30,7 @@ function CreateTrip() {
     budget: null,
   });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [bool, bools] = useState(false);
 
   const [open, close] = useState(false);
@@ -66,9 +61,7 @@ function CreateTrip() {
 
   const getStarted = async () => {
     const user = localStorage.getItem("user");
-   
 
-   
     if (!datas.number || !datas.budget || !datas.people || !datas.location) {
       toast("Fill all the details");
     } else if (datas.number >= 10) {
@@ -78,7 +71,7 @@ function CreateTrip() {
       return;
     } else {
       toast("please wait... we are working on it....");
-      setLoading(true)
+      setLoading(true);
       const finalPromt = actualPromt
         .replace("{location}", datas.location)
         .replace("{people}", datas.people)
@@ -86,14 +79,10 @@ function CreateTrip() {
         .replace("{days}", datas.number);
 
       const result = await chatSession.sendMessage(finalPromt);
-     
 
-      
+      setLoading(false);
 
-      setLoading(false)
-      
       saveAiTrip(result.response.text());
-     
     }
   };
 
@@ -101,68 +90,61 @@ function CreateTrip() {
     setLoading(true);
     const user = JSON.parse(localStorage.getItem("user"));
     const uniqueId = Date.now();
-    
-    
 
     try {
-        // 🛠 Debugging: Log the values before sending the request
-      
-        
-        // Ensure TripData is a valid JSON object
-        const formattedTripData = typeof TripData === "string" ? JSON.parse(TripData) : TripData;
-        const BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
-        const response = await fetch(`${BASE_URL}/api/trips`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                userSelection: datas,  
-                tripData: formattedTripData, // ✅ Use formatted JSON
-                email: user?.email,
-                id: uniqueId,
-                created_at: new Date(Date.now()).toISOString().split("T")[0]
-                
-            }),
-        });
+      // 🛠 Debugging: Log the values before sending the request
 
-        const result = await response.json();
-        if (response.ok) {
-            
-            navigate("/view-trip/" + uniqueId);
-        } else {
-            console.error("❌ Error saving trip data:", result.message);
-        }
+      // Ensure TripData is a valid JSON object
+      const formattedTripData =
+        typeof TripData === "string" ? JSON.parse(TripData) : TripData;
+      const BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
+      const response = await fetch(`${BASE_URL}/api/trips`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userSelection: datas,
+          tripData: formattedTripData, // ✅ Use formatted JSON
+          email: user?.email,
+          id: uniqueId,
+          created_at: new Date(Date.now()).toISOString().split("T")[0],
+        }),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        navigate("/view-trip/" + uniqueId);
+      } else {
+        console.error("❌ Error saving trip data:", result.message);
+      }
     } catch (error) {
-        console.error("❌ Error saving trip data:", error);
+      console.error("❌ Error saving trip data:", error);
     }
 
     setLoading(false);
-};
-
-
-  
-
-
+  };
 
   const getLogedin = useGoogleLogin({
-    onSuccess : (resp)=> userProfile(resp),
-    onError :(error) =>console.log(error)
+    onSuccess: (resp) => userProfile(resp),
+    onError: (error) => console.log(error),
+  });
 
-    
-  })
-
-  const userProfile = (token)=>{
-    axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?acess_token=${token.access_token}`,{
-      headers : {
-        Authorization :`Bearer ${token.access_token}`,
-        Accept: 'application/json'
-      }
-    }).then((resp)=>{
-     
-      localStorage.setItem("user",JSON.stringify(resp.data))
-      close(false)
-      getStarted()
-    })
-  }
+  const userProfile = (token) => {
+    axios
+      .get(
+        `https://www.googleapis.com/oauth2/v1/userinfo?acess_token=${token.access_token}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token.access_token}`,
+            Accept: "application/json",
+          },
+        }
+      )
+      .then((resp) => {
+        localStorage.setItem("user", JSON.stringify(resp.data));
+        close(false);
+        getStarted();
+      });
+  };
 
   return (
     <div className="sm:px-10 md:px-32 xl:px-56 px-4  mt-10 h-screen overflow-y-scroll  no-scrollbar">
@@ -184,7 +166,7 @@ function CreateTrip() {
               type="text"
               placeholder="Enter your place 🏞️"
               value={datas.location || ""}
-              className="px-3 outline-none w-full"
+              className="px-3 outline-none w-full bg-white"
               onChange={(e) => {
                 fetchPlaces(e.target.value);
                 bools(true);
@@ -215,8 +197,7 @@ function CreateTrip() {
               <input
                 type="number"
                 placeholder="ex:3"
-                
-                className="px-3 outline-none w-full"
+                className="px-3 outline-none w-full bg-white"
                 onChange={(e) => {
                   handelEvents("number", e.target.value);
                 }}
@@ -268,20 +249,29 @@ function CreateTrip() {
             </ul>
           </div>
           <div className="flex justify-end my-6">
-            <Button onClick={getStarted} disabled ={loading}>
-              {loading ? <AiOutlineLoading3Quarters className="w-7 h-7 animate-spin"/> : "Get Started"}
+            <Button onClick={getStarted} disabled={loading}>
+              {loading ? (
+                <AiOutlineLoading3Quarters className="w-7 h-7 animate-spin" />
+              ) : (
+                "Get Started"
+              )}
             </Button>
           </div>
 
           <Dialog open={open} onOpenChange={close}>
             <DialogContent>
               <DialogHeader>
-              <DialogTitle> <img src ='/Srinus.png' className='w-20 h-12 mt-2'/> <br/>Sign in with Google</DialogTitle>
-                <DialogDescription className ="">
-               
-                
-                Sign in to the app with google authontication securely
-                <Button className ="w-full my-3"  onClick ={getLogedin}> <FcGoogle /> Sign in with google</Button>
+                <DialogTitle>
+                  {" "}
+                  <img src="/Srinus.png" className="w-20 h-12 mt-2" /> <br />
+                  Sign in with Google
+                </DialogTitle>
+                <DialogDescription className="">
+                  Sign in to the app with google authontication securely
+                  <Button className="w-full my-3" onClick={getLogedin}>
+                    {" "}
+                    <FcGoogle /> Sign in with google
+                  </Button>
                 </DialogDescription>
               </DialogHeader>
             </DialogContent>
