@@ -64,8 +64,8 @@ function CreateTrip() {
 
     if (!datas.number || !datas.budget || !datas.people || !datas.location) {
       toast("Fill all the details");
-    } else if (datas.number >= 10) {
-      toast("please enter the number less than 10 days ");
+    } else if (datas.number >= 15) {
+      toast("please enter the number less than 15 days ");
     } else if (!user) {
       close(true);
       return;
@@ -81,6 +81,24 @@ function CreateTrip() {
       const result = await chatSession.sendMessage(finalPromt);
 
       setLoading(false);
+
+      // if (!Array.isArray(JSON.parse(result.response.text()).itinerary)) {
+      //   return getStarted();
+      // }
+      try {
+        const responseText = await result.response.text(); // Ensure it's awaited
+        const parsedResponse = JSON.parse(responseText); // Ensure valid JSON
+
+        if (
+          !parsedResponse.itinerary ||
+          typeof parsedResponse.itinerary !== "object"
+        ) {
+          return getStarted();
+        }
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+        return getStarted(); // Call getStarted if JSON parsing fails
+      }
 
       saveAiTrip(result.response.text());
     }
@@ -100,10 +118,12 @@ function CreateTrip() {
       const BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
       const response = await fetch(`${BASE_URL}/api/trips`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           userSelection: datas,
-          tripData: formattedTripData, // ✅ Use formatted JSON
+          tripData: formattedTripData,
           email: user?.email,
           id: uniqueId,
           created_at: new Date(Date.now()).toISOString().split("T")[0],

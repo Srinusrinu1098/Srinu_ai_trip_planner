@@ -7,7 +7,6 @@ import axios from "axios";
 
 function ViewTrip() {
   const { tripId } = useParams();
-  console.log(tripId);
 
   const [trip, setTrip] = useState(null);
 
