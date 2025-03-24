@@ -1,22 +1,25 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function Activities(props) {
   const { activites } = props;
+  const [itern, setitern] = useState(null);
 
   if (!activites?.itinerary) {
     return <p>Loading activities...</p>;
   }
 
-  const itineraryArray = Object.values(activites.itinerary)[0];
+  let itineraryArray = Object.values(activites.itinerary)[0];
 
-  // Ensure itineraryArray is an array before mapping
   if (!Array.isArray(itineraryArray)) {
-    return <p>No activities available.</p>;
+    itineraryArray = Object.values(activites.itinerary);
   }
+
+  // Function to generate Cloudinary image URL dynamically
 
   return (
     <div>
-      {itineraryArray.map((each, index) => (
+      {itineraryArray?.map((each, index) => (
         <div key={index} className="px-9 my-2">
           <h1 className="text-[24px] font-bold">
             Day {index + 1}: {each.theme}
