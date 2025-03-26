@@ -82,9 +82,6 @@ function CreateTrip() {
 
       setLoading(false);
 
-      // if (!Array.isArray(JSON.parse(result.response.text()).itinerary)) {
-      //   return getStarted();
-      // }
       try {
         const responseText = await result.response.text(); // Ensure it's awaited
         const parsedResponse = JSON.parse(responseText); // Ensure valid JSON
@@ -225,7 +222,9 @@ function CreateTrip() {
             </div>
           </div>
           <div>
-            {" "}
+            <h2 className="text-black font-bold text-3xl">
+              How many peoples want to travel?
+            </h2>{" "}
             <ul className="grid grid-cols-3 gap-5 my-5">
               {noOfUSers.map((each) => (
                 <li
@@ -247,7 +246,9 @@ function CreateTrip() {
             </ul>
           </div>
           <div>
-            {" "}
+            <h2 className="text-black font-bold text-3xl">
+              What is your travel budget?
+            </h2>{" "}
             <ul className="grid grid-cols-3 gap-5 my-5">
               {Budgets.map((each) => (
                 <li

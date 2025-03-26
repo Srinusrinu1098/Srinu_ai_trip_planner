@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Activities(props) {
   const { activites } = props;
-  const [itern, setitern] = useState(null);
+  const [imageUrls, setImageUrls] = useState({}); // Store fetched image URLs
 
   if (!activites?.itinerary) {
     return <p>Loading activities...</p>;
@@ -15,7 +15,27 @@ function Activities(props) {
     itineraryArray = Object.values(activites.itinerary);
   }
 
-  // Function to generate Cloudinary image URL dynamically
+  // Function to fetch image based on keyword
+  const getImage = async (keyword) => {
+    if (imageUrls[keyword]) return; // Skip if already fetched
+
+    try {
+      const response = await fetch(`https://picsum.photos/600/400`);
+      const imageUrl = response.url;
+
+      setImageUrls((prev) => ({ ...prev, [keyword]: imageUrl })); // Store in state
+    } catch (error) {
+      console.error("Error fetching image:", error);
+    }
+  };
+
+  // Fetch images for themes and placeNames
+  useEffect(() => {
+    itineraryArray.forEach((each) => {
+      getImage(each.theme); // Fetch image for theme
+      each.activities?.forEach((trip) => getImage(trip.placeName)); // Fetch image for placeName
+    });
+  }, [activites]);
 
   return (
     <div>
@@ -25,7 +45,7 @@ function Activities(props) {
             Day {index + 1}: {each.theme}
           </h1>
           <img
-            src="/travel.jpg"
+            src={imageUrls[each.theme] || "/travel.jpg"} // Theme image or fallback
             className="sm:w-[650px] md:w-[800px] lg:w-[600px] xlg:w-[800px] w-[800px] my-5"
             style={{ borderRadius: "24px" }}
           />
@@ -37,7 +57,10 @@ function Activities(props) {
                 target="_blank"
               >
                 <div className="shadow-sm hover:shadow-2xl cursor-pointer border border-slate-500 rounded-md px-2 py-2">
-                  <img src="/travel.jpg" className="w-[300px] rounded-md" />
+                  <img
+                    src={imageUrls[trip.placeName] || "/travel.jpg"} // Place image or fallback
+                    className="w-[300px] rounded-md"
+                  />
                   <h2 className="text-[24px] font-bold font-sans py-1">
                     {trip.placeName}{" "}
                     <span className="font-serif font-medium text-[18px]">
