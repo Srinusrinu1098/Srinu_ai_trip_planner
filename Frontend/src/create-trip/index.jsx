@@ -206,7 +206,7 @@ function CreateTrip() {
             </ul>
           </div>
           <div>
-            <h2 className="text-black font-bold text-3xl">
+            <h2 className="text-black font-bold  sm:text-[34px] md:text-[34px] text-[24px]">
               How many days you want to travel?
             </h2>
             <div className=" rounded-md p-2 w-full shadow-lg border border-slate-400 my-4">
@@ -222,7 +222,7 @@ function CreateTrip() {
             </div>
           </div>
           <div>
-            <h2 className="text-black font-bold text-3xl">
+            <h2 className="text-black font-bold  sm:text-[34px] md:text-[34px] text-[24px]">
               How many peoples want to travel?
             </h2>{" "}
             <ul className="grid grid-cols-3 gap-5 my-5">
@@ -246,7 +246,7 @@ function CreateTrip() {
             </ul>
           </div>
           <div>
-            <h2 className="text-black font-bold text-3xl">
+            <h2 className="text-black font-bold  sm:text-[34px] md:text-[34px] text-[24px]">
               What is your travel budget?
             </h2>{" "}
             <ul className="grid grid-cols-3 gap-5 my-5">
